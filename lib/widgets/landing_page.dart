@@ -7,6 +7,8 @@ import 'package:tiktok_clone/screens/search_screen.dart';
 import 'package:tiktok_clone/tik_tok_icons_icons.dart';
 
 class LandingPage extends StatefulWidget {
+  final int tab;
+  LandingPage({this.tab = 0});
   @override
   _LandingPageState createState() => _LandingPageState();
 }
@@ -32,6 +34,7 @@ class _LandingPageState extends State<LandingPage> {
             MediaQuery.of(context).size.aspectRatio < 0.5 ? true : false;
       });
     });
+    setState(() => _currentIndex = widget.tab);
   }
 
   @override
@@ -48,9 +51,9 @@ class _LandingPageState extends State<LandingPage> {
   Color get _iconColor =>
       _currentIndex == 0 ? Colors.white : Color.fromARGB(255, 25, 25, 25);
 
-  void _changeScreen(int tabNo) {
+  void _changeTab(int tabNo) {
     if (tabNo == 2) {
-      setState(() => _currentIndex = tabNo);
+      lastTab = _currentIndex;
       gotoAddVideoScreen();
     } else
       setState(() => _currentIndex = tabNo);
@@ -58,7 +61,7 @@ class _LandingPageState extends State<LandingPage> {
 
   Widget get _bottomNavigationBar => BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: _changeScreen,
+        onTap: _changeTab,
         type: BottomNavigationBarType.fixed,
         backgroundColor: _currentIndex == 0 ? Colors.transparent : Colors.white,
         selectedIconTheme: IconThemeData(

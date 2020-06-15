@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:tiktok_clone/routes/route_navigation.dart';
 
 class AddVideoScreen extends StatefulWidget {
   @override
@@ -44,7 +45,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
     );
   }
 
-  /// [Not used]
+  /// `Not used`
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // void showInSnackBar(String message) {
   //   _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -158,7 +159,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
           color: _iconColor,
           size: _iconSize,
         ),
-        onPressed: Navigator.of(context).pop,
+        onPressed: exitCameraScreen,
       );
 
   Widget get _cameraToggleButton => Padding(

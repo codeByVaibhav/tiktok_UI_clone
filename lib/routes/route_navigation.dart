@@ -1,20 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:tiktok_clone/routes/router.gr.dart';
 
-// void gotoHomeScreen() =>
-//     ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.homeScreen);
-
-// void gotoSearchScreen() =>
-//     ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.searchScreen);
-
-// void gotoMessagesScreen() =>
-//     ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.messageScreen);
-
-// void gotoProfileScreen() =>
-//     ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.profileScreen);
+int lastTab = 0;
 
 void gotoAddVideoScreen() =>
-    ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.addVideoScreen);
+    ExtendedNavigator.ofRouter<Router>().popAndPushNamed(Routes.addVideoScreen);
 
-void gotoLandingPage() =>
-    ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.landingPage);
+void exitCameraScreen() =>
+    ExtendedNavigator.ofRouter<Router>().popAndPushNamed(Routes.landingPage,
+        arguments: LandingPageArguments(tab: lastTab));
