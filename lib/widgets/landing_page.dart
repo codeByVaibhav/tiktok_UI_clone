@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/routes/route_navigation.dart';
-import 'package:tiktok_clone/screens/add_video_screen.dart';
 import 'package:tiktok_clone/screens/home_screen.dart';
 import 'package:tiktok_clone/screens/messages_screen.dart';
 import 'package:tiktok_clone/screens/profile_screen.dart';
@@ -19,7 +18,7 @@ class _LandingPageState extends State<LandingPage> {
   final List<Widget> _tabs = [
     HomeScreen(),
     SearchScreen(),
-    AddVideoScreen(),
+    Container(), // placeholder for AppVideoPlayer Screen
     MessageScreen(),
     ProfileScreen(),
   ];
@@ -37,111 +36,106 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_tallPhone == null) {
-      return Container();
-    }
+    if (_tallPhone == null) return Container();
     return Scaffold(
       backgroundColor: Colors.black,
       extendBody: _currentIndex == 0 ? !_tallPhone : false,
       body: _tabs[_currentIndex],
-      bottomNavigationBar: _buildBottomNavigationBar,
+      bottomNavigationBar: _bottomNavigationBar,
     );
   }
 
-  get _buildBottomNavigationBar {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      onTap: (value) => setState(() {
-        if (value != 2) _currentIndex = value;
-      }),
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: _currentIndex == 0 ? Colors.transparent : Colors.white,
-      selectedIconTheme: IconThemeData(
-        color:
-            _currentIndex == 0 ? Colors.white : Color.fromARGB(255, 25, 25, 25),
-        opacity: 1.0,
-        size: 23.0,
-      ),
-      unselectedIconTheme: IconThemeData(
-        color:
-            _currentIndex == 0 ? Colors.white : Color.fromARGB(255, 25, 25, 25),
-        opacity: 0.5,
-        size: 21.0,
-      ),
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(TikTokIcons.home),
-          title: SizedBox.shrink(),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(TikTokIcons.search),
-          title: SizedBox.shrink(),
-        ),
-        BottomNavigationBarItem(
-          icon: _customCreateIcon,
-          title: SizedBox.shrink(),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(TikTokIcons.messages),
-          title: SizedBox.shrink(),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(TikTokIcons.profile),
-          title: SizedBox.shrink(),
-        ),
-      ],
-    );
+  Color get _iconColor =>
+      _currentIndex == 0 ? Colors.white : Color.fromARGB(255, 25, 25, 25);
+
+  void _changeScreen(int tabNo) {
+    if (tabNo == 2) {
+      setState(() => _currentIndex = tabNo);
+      gotoAddVideoScreen();
+    } else
+      setState(() => _currentIndex = tabNo);
   }
 
-  get _customCreateIcon {
-    return Container(
-      width: 60.0,
-      height: 40.0,
-      child: Stack(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                width: 30.0,
-                height: 39.0,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(200, 250, 45, 108),
-                  borderRadius: BorderRadius.circular(7.0),
-                ),
-              ),
-              Container(
-                width: 30.0,
-                height: 39.0,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(200, 32, 211, 234),
-                  borderRadius: BorderRadius.circular(7.0),
-                ),
-              ),
-            ],
+  Widget get _bottomNavigationBar => BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _changeScreen,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: _currentIndex == 0 ? Colors.transparent : Colors.white,
+        selectedIconTheme: IconThemeData(
+          color: _iconColor,
+          opacity: 1.0,
+          size: 23.0,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: _iconColor,
+          opacity: 0.5,
+          size: 21.0,
+        ),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(TikTokIcons.home),
+            title: SizedBox.shrink(),
           ),
-          Center(
-            child: GestureDetector(
-              onTap: gotoAddVideoScreen,
+          BottomNavigationBarItem(
+            icon: Icon(TikTokIcons.search),
+            title: SizedBox.shrink(),
+          ),
+          BottomNavigationBarItem(
+            icon: _addVideoIcon,
+            title: SizedBox.shrink(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(TikTokIcons.messages),
+            title: SizedBox.shrink(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(TikTokIcons.profile),
+            title: SizedBox.shrink(),
+          ),
+        ],
+      );
+
+  Widget get _addVideoIcon => Container(
+        width: 60.0,
+        height: 40.0,
+        child: Stack(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 30.0,
+                  height: 39.0,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(200, 250, 45, 108),
+                    borderRadius: BorderRadius.circular(7.0),
+                  ),
+                ),
+                Container(
+                  width: 30.0,
+                  height: 39.0,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(200, 32, 211, 234),
+                    borderRadius: BorderRadius.circular(7.0),
+                  ),
+                ),
+              ],
+            ),
+            Center(
               child: Container(
                 width: 30.0 * 1.7,
                 height: double.infinity,
                 decoration: BoxDecoration(
-                  color: _currentIndex == 0
-                      ? Colors.white
-                      : Color.fromARGB(255, 25, 25, 25),
+                  color: _iconColor,
                   borderRadius: BorderRadius.circular(7.0),
                 ),
-                child: Icon(Icons.add,
-                    size: 25.0,
-                    color:
-                        _currentIndex == 0 ? Colors.grey[900] : Colors.white),
+                child: Icon(
+                  Icons.add,
+                  size: 25.0,
+                  color: _currentIndex == 0 ? Colors.grey[900] : Colors.white,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-// end
+          ],
+        ),
+      );
 }

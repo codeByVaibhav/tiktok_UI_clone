@@ -25,50 +25,35 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
   @override
   void initState() {
     super.initState();
-
     _controller = VideoPlayerController.asset(widget.video);
-
-    _controller.addListener(() {
-      setState(() {});
-    });
-
+    _controller.addListener(() => setState(() {}));
     _controller.setLooping(true);
-
     _controller.initialize().then(
-          (_) => setState(
-            () {
-              setState(() {
-                _screenSize = MediaQuery.of(context).size;
-                _tallPhone = _screenSize.aspectRatio < 0.5 ? true : false;
-                _videoIsPotrait =
-                    _controller.value.aspectRatio < 1 ? true : false;
-              });
-              _controller.play();
-            },
-          ),
-        );
+      (_) {
+        _screenSize = MediaQuery.of(context).size;
+        _tallPhone = _screenSize.aspectRatio < 0.5 ? true : false;
+        _videoIsPotrait = _controller.value.aspectRatio < 1 ? true : false;
+        _controller.play();
+      },
+    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.pause().then((_) => _controller.dispose());
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_tallPhone == null || _videoIsPotrait == null) {
+    if (_tallPhone == null || _videoIsPotrait == null)
       return Center(child: CircularProgressIndicator());
-    }
-    return _body();
+    return _body;
   }
 
-  _body() => Stack(
+  Widget get _body => Stack(
         children: <Widget>[
-          _videoIsPotrait ? _potraitVideo() : _landscapeVideo(),
-          // Body Top---------------------------------------------
-          // Body Top---------------------------------------------
-          // Body Top---------------------------------------------
+          _videoIsPotrait ? _potraitVideo : _landscapeVideo,
           SafeArea(
             child: Column(
               children: <Widget>[
@@ -83,10 +68,18 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
               ],
             ),
           ),
-          // End---------------------------------------------
-          // End---------------------------------------------
-          // End---------------------------------------------
         ],
+      );
+
+  Widget get _potraitVideo => SafeArea(bottom: _tallPhone, child: _video);
+
+  Widget get _landscapeVideo => SafeArea(
+        child: Center(
+          child: AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: _video,
+          ),
+        ),
       );
 
   get _video => Stack(
@@ -105,21 +98,6 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
           ),
         ],
       );
-
-  _potraitVideo() {
-    return SafeArea(bottom: _tallPhone, child: _video);
-  }
-
-  _landscapeVideo() {
-    return SafeArea(
-      child: Center(
-        child: AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: _video,
-        ),
-      ),
-    );
-  }
 }
 
 class _PlayPauseOverlay extends StatelessWidget {
