@@ -5,6 +5,7 @@ import 'package:tiktok_clone/screens/messages_screen.dart';
 import 'package:tiktok_clone/screens/profile_screen.dart';
 import 'package:tiktok_clone/screens/search_screen.dart';
 import 'package:tiktok_clone/tik_tok_icons_icons.dart';
+import 'package:tiktok_clone/widgets/navigation_handler.dart';
 
 class LandingPage extends StatefulWidget {
   final int tab;
@@ -40,11 +41,13 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     if (_tallPhone == null) return Container();
-    return Scaffold(
-      backgroundColor: Colors.black,
-      extendBody: _currentIndex == 0 ? !_tallPhone : false,
-      body: _tabs[_currentIndex],
-      bottomNavigationBar: _bottomNavigationBar,
+    return NavigationHandler(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        extendBody: _currentIndex == 0 ? !_tallPhone : false,
+        body: _tabs[_currentIndex],
+        bottomNavigationBar: _bottomNavigationBar,
+      ),
     );
   }
 

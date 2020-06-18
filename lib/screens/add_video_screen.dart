@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:tiktok_clone/routes/route_navigation.dart';
+import 'package:tiktok_clone/widgets/navigation_handler.dart';
 
 class AddVideoScreen extends StatefulWidget {
   @override
@@ -33,26 +34,18 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // key: _scaffoldKey,
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: <Widget>[
-          _cameraPreview,
-          _buttonsScreen,
-        ],
+    return NavigationHandler(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: <Widget>[
+            _cameraPreview,
+            _buttonsScreen,
+          ],
+        ),
       ),
     );
   }
-
-  /// `Not used`
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  // void showInSnackBar(String message) {
-  //   _scaffoldKey.currentState.showSnackBar(SnackBar(
-  //     content: Text(message),
-  //     backgroundColor: Colors.green,
-  //   ));
-  // }
 
   _toggelCamera() {
     _selectedCamera = (_selectedCamera + 1) % _cameras.length;
@@ -185,6 +178,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
           ],
         ),
       );
+
   Widget get _songButton => Row(
         children: <Widget>[
           Icon(
