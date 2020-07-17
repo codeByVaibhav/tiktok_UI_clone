@@ -1,2 +1,2 @@
 # tiktok_clone
-A dummy tiktok app clone in flutter.
+A tiktok app clone in flutter.
