@@ -1,2 +1,2 @@
-# tiktok_clone
-A tiktok app ui clone in flutter.
+# About
+TikTok app clone in Flutter SDK.
